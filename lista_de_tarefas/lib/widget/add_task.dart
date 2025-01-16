@@ -5,15 +5,28 @@ void addTask(context) {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Tarefa:"),
           content: TextField(
             decoration: InputDecoration(
-              labelText: "Digite sua tarefa",
-              labelStyle: TextStyle(
-                color: Colors.grey
-              )),
+                prefixIcon: Icon(Icons.border_color_outlined),
+                iconColor: Colors.grey,
+                labelText: "Digite a tarefa",
+                labelStyle: TextStyle(color: Colors.grey)),
           ),
-          icon: Icon(Icons.ac_unit),
+          icon: Icon(Icons.burst_mode_rounded),
+          iconColor: Colors.grey,
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(onPressed: () => Navigator.pop(context), child: Icon(Icons.cancel_outlined)),
+                ElevatedButton(onPressed: () {
+              Navigator.pop(context);
+            }, child: Icon(Icons.check)),
+              ],
+            )
+            
+            
+          ],
         );
       });
 }

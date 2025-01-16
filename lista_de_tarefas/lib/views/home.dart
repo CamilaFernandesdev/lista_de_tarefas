@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:lista_de_tarefas/widget/add_task.dart';
 
 class Home extends StatefulWidget {
@@ -14,6 +15,10 @@ class _HomeState extends State<Home> {
     'tarefa de casa',
     'varrer o quintal'
   ];
+
+  _saveTask(){
+    
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +48,14 @@ class _HomeState extends State<Home> {
                   textColor: Colors.white,
                   selected: true,
                   selectedTileColor: Colors.grey[200],
-
+                  leading: Checkbox(value: true, onChanged: (bool? value){}),
                   );
                 
               }
         ),
-        )],
+        
+        ),
+        ],
       ),
     );
   }

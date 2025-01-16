@@ -1,5 +1,10 @@
-// class ToDoModel {
-//   late String title;
-//   bool completed;
-// }
+class ToDoModel {
+  String title;
+  bool completed = false;
 
+
+ToDoModel({
+  required this.title,
+  required this.completed,
+});
+}
