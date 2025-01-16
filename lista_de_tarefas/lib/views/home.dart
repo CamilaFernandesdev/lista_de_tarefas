@@ -1,5 +1,6 @@
+
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:lista_de_tarefas/styles/styles.dart';
 import 'package:lista_de_tarefas/widget/add_task.dart';
 
 class Home extends StatefulWidget {
@@ -13,25 +14,22 @@ class _HomeState extends State<Home> {
    final List _taskLists = [
     'ír ano mercado',
     'tarefa de casa',
-    'varrer o quintal'
+    'vLavar louca'
   ];
-
-  _saveTask(){
-    
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.purple,
-        foregroundColor: Colors.white,
+        centerTitle: true,
+        backgroundColor: AppColors.principal,
+        foregroundColor: AppColors.foregroundColor,
         title: const Text("Lista de Tarefas"),
       ),
       floatingActionButton: FloatingActionButton.extended(
         elevation: 15,
-        backgroundColor: Colors.purple,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.principal,
+        foregroundColor: AppColors.foregroundColor,
         onPressed: () => addTask(context),
         icon: Icon(Icons.add),
         label: const Text("task"),
@@ -45,10 +43,15 @@ class _HomeState extends State<Home> {
               itemBuilder: (context, index) {
                 return ListTile(
                   title: Text(_taskLists[index]),
-                  textColor: Colors.white,
-                  selected: true,
-                  selectedTileColor: Colors.grey[200],
-                  leading: Checkbox(value: true, onChanged: (bool? value){}),
+                  textColor: AppColors.darkGrey,
+                  selected: false,
+                  selectedTileColor: AppColors.secundary,
+                  leading: Checkbox(
+                    checkColor: AppColors.lightGrey,
+                    activeColor: AppColors.darkGrey,
+                    value: true, 
+                    onChanged: (bool? value){}),
+                  
                   );
                 
               }
