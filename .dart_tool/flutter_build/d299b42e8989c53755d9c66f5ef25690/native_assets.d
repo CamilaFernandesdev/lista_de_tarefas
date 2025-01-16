@@ -1,0 +1,1 @@
+ /Users/camis/Worksapce/flutter_projects/lista_de_tarefas/.dart_tool/flutter_build/d299b42e8989c53755d9c66f5ef25690/native_assets.yaml: 
