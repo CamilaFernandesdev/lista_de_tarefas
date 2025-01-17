@@ -1,7 +1,6 @@
-
 import 'package:flutter/material.dart';
+import 'package:lista_de_tarefas/controllers/todo_controllers.dart';
 import 'package:lista_de_tarefas/styles/styles.dart';
-import 'package:lista_de_tarefas/widget/add_task.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -11,11 +10,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-   final List _taskLists = [
-    'ír ano mercado',
-    'tarefa de casa',
-    'vLavar louca'
-  ];
+  final ToDoController _controller = ToDoController();
+  final TextEditingController _textController = TextEditingController();  
 
   @override
   Widget build(BuildContext context) {
@@ -28,36 +24,76 @@ class _HomeState extends State<Home> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         elevation: 15,
-        backgroundColor: AppColors.principal,
-        foregroundColor: AppColors.foregroundColor,
-        onPressed: () => addTask(context),
         icon: Icon(Icons.add),
         label: const Text("task"),
+        backgroundColor: AppColors.principal,
+        foregroundColor: AppColors.foregroundColor,
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              content: TextField(
+                controller: _textController,
+                decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.border_color_outlined),
+                    iconColor: Colors.grey,
+                    labelText: "Digite a tarefa",
+                    labelStyle: TextStyle(color: Colors.grey)),
+              ),
+              icon: Icon(Icons.burst_mode_rounded),
+              iconColor: Colors.grey,
+              actions: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shadowColor: AppColors.cancel),
+                        onPressed: () => Navigator.pop(context),
+                        child: Icon(
+                          Icons.cancel_outlined,
+                          color: AppColors.cancel,
+                        )),
+                    ElevatedButton(
+                      style:
+                          ElevatedButton.styleFrom(shadowColor: AppColors.save),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: Icon(
+                        Icons.check,
+                        color: AppColors.save,
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          );
+        },
       ),
-
-      //bottomNavigationBar: BottomNavigationBar(items: null),
       body: Column(
-        children: [Expanded(
-          child: ListView.builder(
-              itemCount: _taskLists.length, 
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(_taskLists[index]),
-                  textColor: AppColors.darkGrey,
-                  selected: false,
-                  selectedTileColor: AppColors.secundary,
-                  leading: Checkbox(
-                    checkColor: AppColors.lightGrey,
-                    activeColor: AppColors.darkGrey,
-                    value: true, 
-                    onChanged: (bool? value){}),
-                  
+        children: [
+          Expanded(
+            child: ListView.separated(
+                separatorBuilder: (context, index) => Divider(
+                      color: AppColors.lightGrey,
+                    ),
+                itemCount: _controller.taskLists.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(_controller.taskLists[index] as String),
+                    textColor: AppColors.darkGrey,
+                    selected: false,
+                    selectedTileColor: AppColors.secundary,
+                    leading: Checkbox(
+                        checkColor: AppColors.lightGrey,
+                        activeColor: AppColors.darkGrey,
+                        value: true,
+                        onChanged: (bool? value) {}),
                   );
-                
-              }
-        ),
-        
-        ),
+                }),
+          ),
         ],
       ),
     );
