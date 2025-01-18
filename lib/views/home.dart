@@ -11,7 +11,29 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final ToDoController _controller = ToDoController();
-  final TextEditingController _textController = TextEditingController();  
+  final TextEditingController _textController = TextEditingController();
+
+  void _addTextTask () {
+    final text = _textController.text.trim();
+    if (text.isNotEmpty){
+      setState(() {
+        _controller.addTask();
+      });
+      _textController.clear();
+    }
+  }  
+
+  void _toggleTaskStatus(int index){
+    setState(() {
+      _controller.toggleTaskStatus(index);
+    });
+  }
+
+  void _removeTask(int index){
+    setState(() {
+      _controller.deleteTask(index);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +80,7 @@ class _HomeState extends State<Home> {
                       style:
                           ElevatedButton.styleFrom(shadowColor: AppColors.save),
                       onPressed: () {
+                        _controller.addTask();
                         Navigator.pop(context);
                       },
                       child: Icon(
@@ -81,16 +104,28 @@ class _HomeState extends State<Home> {
                     ),
                 itemCount: _controller.taskLists.length,
                 itemBuilder: (context, index) {
+
+                  final task = _controller.taskLists[index];
+
                   return ListTile(
-                    title: Text(_controller.taskLists[index] as String),
+                    title: Text(
+                      _controller.taskLists[index] as String,
+                      style: TextStyle(
+                        decoration: task.isCompleted ? TextDecoration.lineThrough : null,
+                      ),),
                     textColor: AppColors.darkGrey,
                     selected: false,
                     selectedTileColor: AppColors.secundary,
                     leading: Checkbox(
                         checkColor: AppColors.lightGrey,
                         activeColor: AppColors.darkGrey,
-                        value: true,
-                        onChanged: (bool? value) {}),
+                        value: task.isCompleted,
+                        onChanged: (_) => _toggleTaskStatus(index)),
+                    trailing: IconButton(
+                      onPressed: () => _removeTask(index), 
+                      icon: Icon(Icons.delete, color: AppColors.cancel
+                      ,),
+                      ),
                   );
                 }),
           ),
