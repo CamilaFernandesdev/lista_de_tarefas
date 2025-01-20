@@ -1,4 +1,4 @@
-#Thu Jan 16 17:52:47 BRT 2025
+#Mon Jan 20 13:37:44 BRT 2025
 base.0=/Users/camis/Worksapce/flutter_projects/lista_de_tarefas/build/app/intermediates/dex/debug/mergeExtDexDebug/classes.dex
 base.1=/Users/camis/Worksapce/flutter_projects/lista_de_tarefas/build/app/intermediates/dex/debug/mergeLibDexDebug/0/classes.dex
 base.2=/Users/camis/Worksapce/flutter_projects/lista_de_tarefas/build/app/intermediates/dex/debug/mergeProjectDexDebug/0/classes.dex

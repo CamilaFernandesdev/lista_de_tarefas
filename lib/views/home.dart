@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:lista_de_tarefas/controllers/todo_controllers.dart';
 import 'package:lista_de_tarefas/styles/styles.dart';
@@ -13,15 +14,25 @@ class _HomeState extends State<Home> {
   final ToDoController _controller = ToDoController();
   final TextEditingController _textController = TextEditingController();
 
-  void _addTextTask () {
-    final text = _textController.text.trim();
-    if (text.isNotEmpty){
+  @override
+  void initState() {
+    super.initState();
+    _controller.readTasksFromStorage().then((_){
       setState(() {
-        _controller.addTask();
+        
+      });
+    });
+  }
+  void _onAddTask(){
+    final text = _textController.text.trim();
+    if (text.isNotEmpty) {
+      setState(() {
+        _controller.addTask(text);
       });
       _textController.clear();
+      Navigator.pop(context);
     }
-  }  
+  }
 
   void _toggleTaskStatus(int index){
     setState(() {
@@ -79,10 +90,7 @@ class _HomeState extends State<Home> {
                     ElevatedButton(
                       style:
                           ElevatedButton.styleFrom(shadowColor: AppColors.save),
-                      onPressed: () {
-                        _controller.addTask();
-                        Navigator.pop(context);
-                      },
+                      onPressed: _onAddTask,
                       child: Icon(
                         Icons.check,
                         color: AppColors.save,
@@ -109,11 +117,12 @@ class _HomeState extends State<Home> {
 
                   return ListTile(
                     title: Text(
-                      _controller.taskLists[index] as String,
+                      task.title,
                       style: TextStyle(
-                        decoration: task.isCompleted ? TextDecoration.lineThrough : null,
-                      ),),
-                    textColor: AppColors.darkGrey,
+                        color: task.isCompleted? AppColors.lightGrey : AppColors.darkGrey
+                      ),
+                    ),
+
                     selected: false,
                     selectedTileColor: AppColors.secundary,
                     leading: Checkbox(
@@ -124,13 +133,12 @@ class _HomeState extends State<Home> {
                     trailing: IconButton(
                       onPressed: () => _removeTask(index), 
                       icon: Icon(Icons.delete, color: AppColors.cancel
-                      ,),
                       ),
-                  );
-                }),
-          ),
-        ],
-      ),
+                    ),
+                );
+              }),
+            ),
+          ]),
     );
   }
 }

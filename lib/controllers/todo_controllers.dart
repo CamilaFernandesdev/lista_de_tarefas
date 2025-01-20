@@ -1,58 +1,39 @@
-
 import 'dart:convert';
-import 'dart:core';
-import 'dart:io';
 
 import 'package:lista_de_tarefas/model/todo_model.dart';
-import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ToDoController {
-  //CRUD
-  List<ToDoModel> taskLists = [
-    ToDoModel(title: 'teste', isCompleted: true),
-    ToDoModel(title: 'teste2', isCompleted: true),
-    ToDoModel(title: 'teste3'),
+  List<ToDoModel> taskLists = [];
 
-  ];
+  void addTask (String title){
+    final newTask = ToDoModel(title: title);
+    taskLists.add(newTask);
+    saveTaskToStorage();
+  }
 
-  get isCompleted => null;
-    //add new tavoid> addTaDoModel newTask);
+  void toggleTaskStatus(int index){
+    taskLists[index].isCompleted = !taskLists[index].isCompleted;
+    saveTaskToStorage();
+  }
 
-  // add task
-  void addTask() {
-      print("teste123");
+  void deleteTask(int index){
+    taskLists.removeAt(index);
+    saveTaskToStorage();
+  }
+  
+  Future<void> saveTaskToStorage() async {
+    final prefs = await SharedPreferences.getInstance();
+    final taskJson = taskLists.map((task) => task.toJson()).toList();
+    await prefs.setString('task', jsonEncode(taskJson));
+  }
+
+  Future<void>readTasksFromStorage() async {
+    final prefs = await SharedPreferences.getInstance();
+    final taskString = prefs.getString('task');
+    if (taskString != null){
+      final List decodedTasks = jsonDecode(taskString);
+      taskLists = decodedTasks.map((taskData) => ToDoModel.fromJson(taskData)).toList();
     }
-
-  void toggleTaskStatus(int index) {}
-
-  void deleteTask(int index) {}
-
   }
-  //status task
-  // void toggleTaskStatus (int index) {
-    
-  //   taskLists[index].isCompleted = !taskLists[index].isCompleted;
-  // }
-
-  //update an existing todo
-  Future<void> updateTask (int index) {
-    // TODO: implement updateTask
-    throw UnimplementedError();
-  }
-
-   //update an existing todo
-  Future<void> deleteTask (int index) {
-    // TODO: implement deleteTask
-    throw UnimplementedError();
-  }
- 
-  Future <String> saveFile(taskLists) async {
-      final Directory diretory = await getApplicationCacheDirectory();
-      File file = File("${diretory.path}/data.json");
-      String data = json.encode(taskLists);
-      file.writeAsStringSync(data);
-      return "";
-  }
-
-
-
+}
